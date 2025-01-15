@@ -7,13 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeAssertions", "NativeA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeAssertions.Tests", "NativeAssertions.Tests\NativeAssertions.Tests.csproj", "{3BA39884-C487-4283-A9E8-A4CA085B46C4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NativeAssertions.FAMigrations", "NativeAssertions.FAMigrations\NativeAssertions.FAMigrations.csproj", "{6E04B157-76B1-8F18-77F9-52288A42CD46}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{BCE65D57-749C-427F-B520-8033C8466F07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -24,5 +23,12 @@ Global
 		{3BA39884-C487-4283-A9E8-A4CA085B46C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BA39884-C487-4283-A9E8-A4CA085B46C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BA39884-C487-4283-A9E8-A4CA085B46C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E04B157-76B1-8F18-77F9-52288A42CD46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E04B157-76B1-8F18-77F9-52288A42CD46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E04B157-76B1-8F18-77F9-52288A42CD46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E04B157-76B1-8F18-77F9-52288A42CD46}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
