@@ -5,18 +5,25 @@
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <FluentAssertions Condition="$(FluentAssertions) == ''">false</FluentAssertions>
+    <DefineConstants Condition="$(FluentAssertions) == true">USE_FLUENTASSERTIONS;$(DefineConstants)</DefineConstants>
+    <TestFrameworkVariant Condition="$(TestFrameworkVariant) == ''">mstest</TestFrameworkVariant>
+    <DefineConstants Condition="$(TestFrameworkVariant) == 'mstest'">USE_MSTEST;$(DefineConstants)</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentAssertions" Version="7.0.0" />
+    <PackageReference Include="FluentAssertions" Version="7.0.0" Condition="$(FluentAssertions) == true" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NativeAssertions\NativeAssertions.csproj" />
+    <ProjectReference Include="..\NativeAssertions\NativeAssertions.csproj" Condition="$(FluentAssertions) != true" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
+    <Using Include="FluentAssertions" Condition="$(FluentAssertions) == true" />
+    <Using Include="FluentAssertions.Execution" Condition="$(FluentAssertions) == true" />
+    <Using Include="NativeAssertions.Execution" Condition="$(FluentAssertions) != true" />
   </ItemGroup>
 
 </Project>

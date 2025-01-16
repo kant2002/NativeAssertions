@@ -1,4 +1,9 @@
 ﻿using System;
+#if USE_MSTEST
+using ProducedAssertionException = Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException;
+#else
+#error "Unknown test framework"
+#endif
 
 namespace NativeAssertions.Tests;
 
@@ -22,7 +27,7 @@ public sealed class StringCollectionsAssertionTests
             result.Should().NotBeNull();
             Assert.Fail("Test failed");
         }
-        catch(NativeAssertions.Execution.AssertionFailedException afe)
+        catch(ProducedAssertionException afe)
         {
             // "context"
             Assert.AreEqual("Expected result not to be <null>.", afe.Message);
@@ -42,11 +47,10 @@ public sealed class StringCollectionsAssertionTests
         string[]? result = ["test"];
         try
         {
-            //FluentAssertions.AssertionExtensions.Should(result).NotBeNull();
             result.Should().BeNull();
             Assert.Fail("Test failed");
         }
-        catch (NativeAssertions.Execution.AssertionFailedException afe)
+        catch (ProducedAssertionException afe)
         {
             // "context"
             Assert.AreEqual("Expected result to be <null>, but found {\"test\"}.", afe.Message);

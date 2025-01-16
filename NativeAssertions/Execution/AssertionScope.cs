@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Reflection;
 using System.Text;
 
 namespace NativeAssertions.Execution;
@@ -94,7 +95,7 @@ public sealed class AssertionScope : IAssertionScope
             if (failed)
             {
                 string? result = failureText?.Invoke();
-                throw new AssertionFailedException(FormatMessage(message.Replace("{reason}", result), args));
+                Throw(FormatMessage(message.Replace("{reason}", result), args));
             }
 
             return new Continuation(this, continueAsserting: !failed);
@@ -103,5 +104,19 @@ public sealed class AssertionScope : IAssertionScope
         {
             comparisonResult = null;
         }
+    }
+
+    static Type? exceptionType;
+
+    private static void Throw(string message)
+    {
+        if (exceptionType is null)
+        {
+            var testAssembly = Array.Find(AppDomain.CurrentDomain
+                .GetAssemblies(), a => a.FullName.StartsWith("Microsoft.VisualStudio.TestPlatform.TestFramework", StringComparison.OrdinalIgnoreCase));
+            exceptionType = testAssembly.GetType("Microsoft.VisualStudio.TestTools.UnitTesting.AssertFailedException");
+        }
+
+        throw (Exception)Activator.CreateInstance(exceptionType, message);
     }
 }
