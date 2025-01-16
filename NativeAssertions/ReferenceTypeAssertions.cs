@@ -11,6 +11,16 @@ public abstract class ReferenceTypeAssertions<TSubject, TAssertions>
     }
     public TSubject? Subject { get; }
     protected abstract string Identifier { get; }
+    public AndConstraint<TAssertions> BeNull(string because = "", params object[] becauseArgs)
+    {
+        Execute.Assertion
+            .ForCondition(Subject is null)
+            .BecauseOf(because, becauseArgs)
+            .WithDefaultIdentifier(Identifier)
+            .FailWith("Expected result to be <null>{reason}, but found {0}.", Subject);
+
+        return new AndConstraint<TAssertions>((TAssertions)this);
+    }
 
     public AndConstraint<TAssertions> NotBeNull(string because = "", params object[] becauseArgs)
     {

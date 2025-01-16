@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Text;
 
 namespace NativeAssertions.Execution;
 
@@ -46,6 +47,46 @@ public sealed class AssertionScope : IAssertionScope
     }
     public Continuation FailWith(string message)
     {
+        return FailWith(message, new object[0]);
+    }
+
+    private string FormatMessage(string message, params object?[]? args)
+    {
+        if (args is null || args.Length == 0)
+        {
+            return message;
+        }
+
+        for (int i = 0; i < args.Length; i++)
+        {
+            string formattedValue = FormatValue(args[i]);
+            message = message.Replace("{" + i + "}", formattedValue);
+        }
+
+        return message;
+    }
+
+    private string FormatValue(object? value)
+    {
+        if (value is Array)
+        {
+            StringBuilder result = new();
+            result.Append("{");
+            result.Append(string.Join(",", ((object[]?)value).Select(FormatValue)));
+            result.Append("}");
+            return result.ToString();
+        }
+
+        if (value is string)
+        {
+            return $"\"{value}\"";
+        }
+
+        return value?.ToString() ?? "null";
+    }
+
+    public Continuation FailWith(string message, params object?[] args)
+    {
         try
         {
             bool failed = comparisonResult != true;
@@ -53,7 +94,7 @@ public sealed class AssertionScope : IAssertionScope
             if (failed)
             {
                 string? result = failureText?.Invoke();
-                throw new AssertionFailedException(message.Replace("{reason}", result));
+                throw new AssertionFailedException(FormatMessage(message.Replace("{reason}", result), args));
             }
 
             return new Continuation(this, continueAsserting: !failed);
